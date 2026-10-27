@@ -2,14 +2,16 @@
 
 Anota pendientes rápidos de tu día, sin iniciar sesión.
 
-**Demo:** [line-up-pi.vercel.app](https://line-up-pi.vercel.app/)
+**Demo:** [line-up-reminder-app.vercel.app/](https://line-up-reminder-app.vercel.app//)
 
 Line Up nació para un momento muy concreto: estás en una llamada, sale un *action item* ("avisarle a Ana del update del CRM") y necesitas anotarlo **ya**, sin abrir otra app ni crear una cuenta. Escribes, presionas Enter y sigues en la conversación.
+
+![Mock](modern-browser-mockup.png)
 
 ## Características
 
 - **Captura en un paso**: un solo campo; Enter guarda.
-- **Modo mini (Picture-in-Picture)**: una ventana flotante de 260×240 que se queda encima de Meet, Zoom o tu editor. Abre directamente en la vista para anotar y tiene un botón para ver la lista de pendientes.
+- **Modo mini (Picture-in-Picture)**: una ventana flotante de 260×240 que se queda encima de Meet, Zoom o tu editor. Abre directamente en la vista para anotar y tiene un botón para ver la lista de pendientes y marcarlos como hechos. Sigue el tema de la página.
 - **Tema claro y oscuro**: respeta la preferencia del sistema y recuerda la que elijas.
 - **Filtros y búsqueda**: Todas / Pendientes / Hechas y búsqueda por texto.
 - **Edición en línea**: edita un pendiente en su lugar (Enter guarda, Esc cancela).
@@ -26,6 +28,8 @@ Line Up nació para un momento muy concreto: estás en una llamada, sale un *act
 - [Document Picture-in-Picture API](https://developer.chrome.com/docs/web-platform/document-picture-in-picture)
 
 ## Cómo funciona el modo mini
+
+Presiona **Modo mini** en el encabezado y se abre la ventana flotante. Para cerrarla, ciérrala como cualquier ventana.
 
 `usePictureInPicture` abre la ventana con `documentPictureInPicture.requestWindow()` y le copia las hojas de estilo de la página. Después, `App` monta el componente `MiniWidget` dentro de esa ventana con `createPortal`. Como la ventana flotante es parte del mismo árbol de React, comparte el estado con la pestaña principal: lo que anotas en un lado aparece al instante en el otro, sin sincronización extra.
 
@@ -67,6 +71,10 @@ npm run build    # build de producción en /dist
 npm run preview  # sirve el build localmente
 npm run lint
 ```
+
+## Despliegue
+
+El proyecto está en Vercel. `vercel.json` usa el preset de Vite: corre `npm run build` y publica `dist/`.
 
 ## Autora
 
