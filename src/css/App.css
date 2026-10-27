@@ -1,29 +1,75 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-body {
-  @apply bg-contain bg-no-repeat bg-space-cadet  h-auto;
-}
-p {
-  @apply text-white;
+/* Modo oscuro por clase (.dark en <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+
+  --radius-lu: 3px;
+  --radius-card: 4px;
+
+  /* Colores de marca (logo) */
+  --color-navy: #171738;
+  --color-pink: #ec4498;
+  --color-lavender: #cfc4ff;
+
+  /* Tokens de tema (claro); se redefinen en .dark */
+  --color-page: #f4f3f8;
+  --color-surface: #ffffff;
+  --color-field: #f4f3f8;
+  --color-row: #f8f7fb;
+  --color-line: #e5e3ee;
+  --color-ink: #171738;
+  --color-muted: #5e5d7a;
+  --color-danger: #c2335f;
 }
 
-#root {
-  @apply max-w-[500px] m-auto min-h-screen flex flex-col justify-between items-center;
+:root {
+  color-scheme: light;
 }
 
-input [type="text"] {
-  @apply bg-transparent border-b-2 border-white text-white ring-0 ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-0 focus:ring-offset-0 outline-none;
+.dark {
+  --color-page: #121229;
+  --color-surface: #1b1b3a;
+  --color-field: #24244a;
+  --color-row: #24244a;
+  --color-line: #2f2f58;
+  --color-ink: #f4f3fa;
+  --color-muted: #aaa9c8;
+  --color-danger: #ff8fa3;
+  color-scheme: dark;
 }
 
-input[type="text"]:focus {
-  outline: none;
-  box-shadow: none;
-  border: none;
+@layer base {
+  body {
+    @apply bg-page font-sans text-ink antialiased;
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-pink);
+    outline-offset: 2px;
+  }
+
+  input::placeholder {
+    color: inherit;
+    opacity: 0.5;
+  }
 }
-input[type="text"]:focus-visible {
-  outline: none;
-  box-shadow: none;
-  border: none;
+
+@utility lu-btn {
+  cursor: pointer;
+  transition: transform 150ms ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
 }

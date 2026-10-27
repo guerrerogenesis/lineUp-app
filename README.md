@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Line Up
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Anota pendientes rápidos de tu día, sin iniciar sesión.
 
-## Available Scripts
+**Demo:** [line-up-pi.vercel.app](https://line-up-pi.vercel.app/)
 
-In the project directory, you can run:
+Line Up nació para un momento muy concreto: estás en una llamada, sale un *action item* ("avisarle a Ana del update del CRM") y necesitas anotarlo **ya**, sin abrir otra app ni crear una cuenta. Escribes, presionas Enter y sigues en la conversación.
 
-### `npm start`
+## Características
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Captura en un paso**: un solo campo; Enter guarda.
+- **Modo mini (Picture-in-Picture)**: una ventana flotante de 260×240 que se queda encima de Meet, Zoom o tu editor. Abre directamente en la vista para anotar y tiene un botón para ver la lista de pendientes.
+- **Tema claro y oscuro**: respeta la preferencia del sistema y recuerda la que elijas.
+- **Filtros y búsqueda**: Todas / Pendientes / Hechas y búsqueda por texto.
+- **Edición en línea**: edita un pendiente en su lugar (Enter guarda, Esc cancela).
+- **Sin backend ni cuentas**: todo vive en `localStorage` y se sincroniza entre pestañas.
+- **Responsivo**: en móvil, el campo para anotar queda fijo abajo, al alcance del pulgar.
+- **Accesible**: botones reales con `aria-label`, etiquetas en todos los campos, foco visible y áreas táctiles de 44 px.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Stack
 
-### `npm test`
+- React 19 + Vite 8
+- Tailwind CSS 4 (configuración en CSS con `@theme`, modo oscuro con `@custom-variant`)
+- Heroicons
+- ESLint 10 (flat config) con reglas de React Hooks
+- [Document Picture-in-Picture API](https://developer.chrome.com/docs/web-platform/document-picture-in-picture)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Cómo funciona el modo mini
 
-### `npm run build`
+`usePictureInPicture` abre la ventana con `documentPictureInPicture.requestWindow()` y le copia las hojas de estilo de la página. Después, `App` monta el componente `MiniWidget` dentro de esa ventana con `createPortal`. Como la ventana flotante es parte del mismo árbol de React, comparte el estado con la pestaña principal: lo que anotas en un lado aparece al instante en el otro, sin sincronización extra.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+La API está disponible en Chrome y Edge de escritorio (116+). En otros navegadores el botón **Modo mini** simplemente no se muestra.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Estructura
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+src/
+├── main.jsx                # Punto de entrada
+├── App.jsx                 # Composición de la página y portal del modo mini
+├── components/
+│   ├── header/             # Logo, fecha, botón Modo mini y cambio de tema
+│   ├── quickCapture/       # Tarjeta de captura y CaptureInput reutilizable
+│   ├── todoCounter/        # Tarjetas de completadas y pendientes
+│   ├── filterTabs/         # Todas / Pendientes / Hechas
+│   ├── todoSearch/
+│   ├── todoList/
+│   ├── todoItem/           # Pendiente con edición en línea y CheckButton
+│   ├── miniWidget/         # Contenido de la ventana flotante
+│   ├── icons/
+│   └── footer/
+├── hooks/
+│   ├── useTodos.js         # Estado + localStorage + sincronización entre pestañas
+│   ├── useTheme.js         # Tema claro / oscuro
+│   └── usePictureInPicture.js
+├── utils/date.js           # Fechas en español ("Hoy · 10:24")
+└── css/App.css             # Tailwind: tema, colores de marca y modo oscuro
+```
 
-### `npm run eject`
+## Correr el proyecto
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Requiere Node.js 20.19 o superior.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # build de producción en /dist
+npm run preview  # sirve el build localmente
+npm run lint
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Autora
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Desarrollado por **Génesis Guerrero** · [geneg.com.mx](https://geneg.com.mx) · [LinkedIn](https://www.linkedin.com/in/genesisd-guerrero/)
